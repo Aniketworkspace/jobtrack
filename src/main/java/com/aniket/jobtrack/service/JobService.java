@@ -53,7 +53,7 @@ public class JobService {
     }
 
     public JobResponseDto getJobById(Long id) {
-        Job job = jobRepository.findById(id).orElseThrow(() -> new JobNotFoundException("job with id" + id + "not found"));
+        Job job = jobRepository.findById(id).orElseThrow(() -> new JobNotFoundException("job with id " + id + " not found"));
         JobResponseDto response = new JobResponseDto();
         response.setJobId(job.getJobId());
         response.setCompanyName(job.getCompanyName());
