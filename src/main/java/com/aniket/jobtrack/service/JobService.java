@@ -66,7 +66,9 @@ public class JobService {
     }
 
     public void deleteById(Long id) {
-        jobRepository.deleteById(id);
+         jobRepository.findById(id).orElseThrow(()-> new JobNotFoundException("job with id " + id + " not found"));
+
+         jobRepository.deleteById(id);
     }
 }
 
