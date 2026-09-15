@@ -4,7 +4,11 @@ import com.aniket.jobtrack.dto.JobRequestDto;
 import com.aniket.jobtrack.dto.JobResponseDto;
 import com.aniket.jobtrack.service.JobService;
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 
 @RestController
@@ -21,8 +25,8 @@ public class JobController {
         return service.saveJob(request);
     }
     @GetMapping
-    public List<JobResponseDto> getAlljobs(){
-        return service.getAllJobs();
+    public Page<JobResponseDto> getAlljobs(@PageableDefault(size = 5, sort = "jobId") Pageable pageable){
+        return service.getAllJobs(pageable);
     }
      @DeleteMapping("/{id}")
     public void deleteJob(@PathVariable Long id){

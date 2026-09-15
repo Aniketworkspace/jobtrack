@@ -5,6 +5,8 @@ import com.aniket.jobtrack.dto.JobResponseDto;
 import com.aniket.jobtrack.entity.Job;
 import com.aniket.jobtrack.exception.JobNotFoundException;
 import com.aniket.jobtrack.repository.JobRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import java.util.List;
 
@@ -37,8 +39,8 @@ public class JobService {
         return response;
     }
 
-    public List<JobResponseDto> getAllJobs() {
-        return jobRepository.findAll().stream().map(job -> {
+    public Page<JobResponseDto> getAllJobs(Pageable pageable) {
+        return jobRepository.findAll(pageable).map(job -> {
 
             JobResponseDto response = new JobResponseDto();
             response.setJobId(job.getJobId());
@@ -49,7 +51,7 @@ public class JobService {
             response.setStatus(job.getStatus());
             return response;
 
-        }).toList();
+        });
     }
 
     public JobResponseDto getJobById(Long id) {
