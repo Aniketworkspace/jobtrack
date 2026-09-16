@@ -5,8 +5,10 @@ import com.aniket.jobtrack.dto.JobResponseDto;
 import com.aniket.jobtrack.entity.Job;
 import com.aniket.jobtrack.exception.JobNotFoundException;
 import com.aniket.jobtrack.repository.JobRepository;
+import com.aniket.jobtrack.specification.JobSpecification;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import java.util.List;
 
@@ -68,9 +70,46 @@ public class JobService {
     }
 
     public void deleteById(Long id) {
-         jobRepository.findById(id).orElseThrow(()-> new JobNotFoundException("job with id " + id + " not found"));
+        jobRepository.findById(id).orElseThrow(() -> new JobNotFoundException("job with id " + id + " not found"));
 
-         jobRepository.deleteById(id);
+        jobRepository.deleteById(id);
+    }
+
+    public Page<JobResponseDto> searchJobs(String companyName, String jobTitle, String status, Pageable pageable){
+
+        Specification<Job> specification = Specification.unrestricted();
+
+        if (companyName != null) {
+            specification = specification.and(
+                    JobSpecification.hasCompanyName(companyName)
+            );
+        }
+
+        if (jobTitle != null) {
+            specification = specification.and(
+                    JobSpecification.hasJobTitle(jobTitle)
+            );
+        }
+
+        if (status != null) {
+            specification = specification.and(
+                    JobSpecification.hasStatus(status)
+            );
+        }
+        Page<Job> jobs = jobRepository.findAll(specification, pageable);
+
+        return jobs.map(job -> {
+            JobResponseDto response = new JobResponseDto();
+
+            response.setJobId(job.getJobId());
+            response.setCompanyName(job.getCompanyName());
+            response.setJobTitle(job.getJobTitle());
+            response.setLocation(job.getLocation());
+            response.setSalary(job.getSalary());
+            response.setStatus(job.getStatus());
+
+            return response;
+        });
     }
 }
 

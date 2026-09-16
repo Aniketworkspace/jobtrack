@@ -9,8 +9,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @RestController
 @RequestMapping("/jobs")
 public class JobController {
@@ -28,6 +26,11 @@ public class JobController {
     public Page<JobResponseDto> getAlljobs(@PageableDefault(size = 5, sort = "jobId") Pageable pageable){
         return service.getAllJobs(pageable);
     }
+    @GetMapping("/search")
+    public Page<JobResponseDto>  getSearchedJobs(@RequestParam(required = false) String companyName,@RequestParam(required = false) String jobTitle,@RequestParam(required = false) String status, @PageableDefault(size = 5, sort = "jobId") Pageable pageable){
+         return service.searchJobs(companyName, jobTitle,status ,pageable);
+    }
+
      @DeleteMapping("/{id}")
     public void deleteJob(@PathVariable Long id){
         service.deleteById(id);
