@@ -19,7 +19,7 @@ private String status;
 
 private String notes;
 @ManyToOne
-@JoinColumn(name = "jobId")
+@JoinColumn(name = "job_Id")
 private Job job;
 
 }
