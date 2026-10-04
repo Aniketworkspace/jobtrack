@@ -3,6 +3,7 @@ package com.aniket.jobtrack.controller;
 import com.aniket.jobtrack.dto.ApplicationRequestDto;
 import com.aniket.jobtrack.dto.ApplicationResponseDto;
 import com.aniket.jobtrack.service.ApplicationService;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,7 +18,7 @@ public class ApplicationController{
         this.applicationService=applicationService;
     }
     @PostMapping
-    public ApplicationResponseDto createApplication(@RequestBody ApplicationRequestDto request){
+    public ApplicationResponseDto createApplication(@RequestBody @Valid  ApplicationRequestDto request){
         return applicationService.saveApplication(request);
     }
 }

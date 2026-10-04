@@ -5,6 +5,7 @@ import com.aniket.jobtrack.dto.ApplicationResponseDto;
 import com.aniket.jobtrack.entity.Application;
 import com.aniket.jobtrack.entity.Job;
 import com.aniket.jobtrack.repository.ApplicationRepository;
+import com.aniket.jobtrack.exception.JobNotFoundException;
 import com.aniket.jobtrack.repository.JobRepository;
 import org.springframework.stereotype.Service;
 
@@ -22,10 +23,9 @@ public class ApplicationService {
     public ApplicationResponseDto saveApplication(ApplicationRequestDto request){
 
     Job job = jobRepository.findById(request.getJobId()).orElseThrow(()->
-            new RuntimeException("Job not found"));
+            new JobNotFoundException("Job with id " + request.getJobId() + " not found"));
     Application application = new Application();
 
-    application.setAppliedDate(request.getAppliedDate());
     application.setStatus(request.getStatus());
     application.setNotes(request.getNotes());
     application.setAppliedDate(request.getAppliedDate());
