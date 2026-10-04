@@ -22,5 +22,4 @@ private String notes;
 @JoinColumn(name = "jobId")
 private Job job;
 
-
 }
