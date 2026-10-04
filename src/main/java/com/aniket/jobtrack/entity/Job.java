@@ -3,6 +3,8 @@ package com.aniket.jobtrack.entity;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.util.List;
+
 @Entity
 @Table(name = "jobs")
 @Data
@@ -17,4 +19,7 @@ public class Job {
     private String location;
     private double salary;
     private String status;
+    @OneToMany(mappedBy = "job")
+    private List<Application> applications;
+
 }
