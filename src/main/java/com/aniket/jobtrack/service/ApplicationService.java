@@ -7,6 +7,8 @@ import com.aniket.jobtrack.entity.Job;
 import com.aniket.jobtrack.repository.ApplicationRepository;
 import com.aniket.jobtrack.exception.JobNotFoundException;
 import com.aniket.jobtrack.repository.JobRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -41,5 +43,22 @@ public class ApplicationService {
     response.setNotes(savedApplication.getNotes());
     response.setAppliedDate(savedApplication.getAppliedDate());
     return response;
+    }
+
+    public Page<ApplicationResponseDto>getAllAplications(Pageable pageable){
+        Page<Application> applications =
+    applicationRepository.findAll(pageable);
+
+        return applications.map(application -> {
+          ApplicationResponseDto response =  new ApplicationResponseDto();
+
+          response.setApplicationId(application.getApplicationId());
+          response.setJobId(application.getJob().getJobId());
+          response.setAppliedDate(application.getAppliedDate());
+          response.setStatus(application.getStatus());
+          response.setNotes(application.getNotes());
+
+          return response;
+        });
     }
 }
