@@ -34,4 +34,11 @@ public class ApplicationController{
     public ApplicationResponseDto getApplicationById(@PathVariable Long id){
         return applicationService.getApplicationById(id);
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteApplication(@PathVariable Long id){
+         applicationService.deleteApplication(id);
+
+         return ResponseEntity.noContent().build();
+    }
 }

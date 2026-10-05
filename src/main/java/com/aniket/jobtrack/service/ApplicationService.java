@@ -77,4 +77,12 @@ public class ApplicationService {
 
         return response;
     }
+
+    public void deleteApplication(Long id){
+        Application application = applicationRepository.findById(id).orElseThrow(
+                ()-> new ApplicationNotFoundException("Application by id " + id + " not found")
+        );
+        applicationRepository.delete(application);
+    }
+
 }
