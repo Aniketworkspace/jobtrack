@@ -30,4 +30,8 @@ public class ApplicationController{
                                                            Pageable pageable){
         return applicationService.getAllAplications(pageable);
     }
+    @GetMapping("/{id}")
+    public ApplicationResponseDto getApplicationById(@PathVariable Long id){
+        return applicationService.getApplicationById(id);
+    }
 }

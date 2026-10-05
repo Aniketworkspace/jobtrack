@@ -4,6 +4,7 @@ import com.aniket.jobtrack.dto.ApplicationRequestDto;
 import com.aniket.jobtrack.dto.ApplicationResponseDto;
 import com.aniket.jobtrack.entity.Application;
 import com.aniket.jobtrack.entity.Job;
+import com.aniket.jobtrack.exception.ApplicationNotFoundException;
 import com.aniket.jobtrack.repository.ApplicationRepository;
 import com.aniket.jobtrack.exception.JobNotFoundException;
 import com.aniket.jobtrack.repository.JobRepository;
@@ -60,5 +61,20 @@ public class ApplicationService {
 
           return response;
         });
+    }
+    public ApplicationResponseDto getApplicationById(Long id){
+        Application application = applicationRepository.findById(id).orElseThrow(
+                ()-> new ApplicationNotFoundException("Application with id " + id + " not found")
+        );
+
+        ApplicationResponseDto response = new ApplicationResponseDto();
+
+        response.setJobId(application.getJob().getJobId());
+        response.setApplicationId(application.getApplicationId());
+        response.setStatus(application.getStatus());
+        response.setAppliedDate(application.getAppliedDate());
+        response.setNotes(application.getNotes());
+
+        return response;
     }
 }

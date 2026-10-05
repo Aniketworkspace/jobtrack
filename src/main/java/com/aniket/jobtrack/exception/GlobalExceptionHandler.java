@@ -36,4 +36,13 @@ public class GlobalExceptionHandler {
 
     return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
     }
+    @ExceptionHandler(ApplicationNotFoundException.class)
+    public ResponseEntity<ErrorResponse> handleApplicationNotFound(ApplicationNotFoundException ex){
+        ErrorResponse er = new ErrorResponse();
+        er.setMessage(ex.getMessage());
+        er.setStatus(HttpStatus.NOT_FOUND.value());
+        er.setTimestamp(LocalDateTime.now());
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(er);
+    }
 }
