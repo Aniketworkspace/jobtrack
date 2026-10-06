@@ -85,4 +85,30 @@ public class ApplicationService {
         applicationRepository.delete(application);
     }
 
+    public ApplicationResponseDto updateApplication(Long id, ApplicationRequestDto request){
+        Application application = applicationRepository.findById(id).orElseThrow(
+                ()-> new ApplicationNotFoundException("Application with id " + id + " not found")
+        );
+        application.setAppliedDate(request.getAppliedDate());
+        application.setStatus(request.getStatus());
+        application.setNotes(request.getNotes());
+
+        Job job = jobRepository.findById(request.getJobId()).orElseThrow(
+                ()-> new JobNotFoundException("job with id " + request.getJobId() + " not found")
+        );
+        application.setJob(job);
+
+        Application updatedApplication = applicationRepository.save(application);
+
+        ApplicationResponseDto response = new ApplicationResponseDto();
+        response.setAppliedDate(updatedApplication.getAppliedDate());
+        response.setStatus(updatedApplication.getStatus());
+        response.setApplicationId(updatedApplication.getApplicationId());
+        response.setJobId(updatedApplication.getJob().getJobId());
+        response.setNotes(updatedApplication.getNotes());
+
+        return response;
+
+    }
+
 }

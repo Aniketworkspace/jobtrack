@@ -41,4 +41,8 @@ public class ApplicationController{
 
          return ResponseEntity.noContent().build();
     }
+    @PutMapping("/{id}")
+    public ApplicationResponseDto updateApplication(@PathVariable Long id, @RequestBody @Valid ApplicationRequestDto request){
+        return applicationService.updateApplication(id, request);
+    }
 }
